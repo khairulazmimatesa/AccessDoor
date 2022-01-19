@@ -1,0 +1,6 @@
+﻿<Application x:Class="AccessDoor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AccessDoor"
+             StartupUri="MainWindow.xaml">
+</Application>

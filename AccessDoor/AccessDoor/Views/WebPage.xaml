@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             NavigationPage.HasBackButton="False"
+             x:Class="AccessDoor.Views.WebPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="buttonStyle" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <!--<Setter Property="BorderColor" Value="Lime" />-->
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BorderWidth" Value="5" />
+                <Setter Property="WidthRequest" Value="70" />
+                <Setter Property="TextColor" Value="#67757c" />
+                <Setter Property="BackgroundColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Log out" Clicked="Logout_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="WebviewLayout" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+            
+                <WebView x:Name="webView"  
+                     WidthRequest="1000" 
+                     HeightRequest="1000" 
+                     Navigated="webOnEndNavigating" />
+                
+            </StackLayout>
+
+            <StackLayout x:Name="Error" IsVisible="False" Padding="12"
+                 AbsoluteLayout.LayoutFlags="PositionProportional"
+                 AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+
+                <Label Text="Login Error:" HorizontalTextAlignment="Center" FontSize="Title"  HorizontalOptions="Center" TextColor="Red"/>
+
+                <Label x:Name="ErrorMsg" HorizontalTextAlignment="Center" FontSize="Medium"  HorizontalOptions="Center" TextColor="Red"/>
+
+                <Button IsVisible="False" x:Name="btnRetry" Text="Retry" HorizontalOptions="Center" Style="{StaticResource buttonStyle}" Clicked="Retry_Clicked"/>
+
+                <Button IsVisible="False" x:Name="btnBack" Text="Back" HorizontalOptions="Center" Style="{StaticResource buttonStyle}" Clicked="Logout_Clicked"/>
+
+
+            </StackLayout>
+
+            <StackLayout x:Name="progress" Padding="12"
+                 AbsoluteLayout.LayoutFlags="PositionProportional"
+                 AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+
+                <ActivityIndicator IsRunning="true" Color="White" BackgroundColor="Transparent"/>
+
+                <Label Text="Loading..." HorizontalOptions="Center" TextColor="White"/>
+
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

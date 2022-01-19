@@ -1,0 +1,46 @@
+﻿using AccessDoor.Views;
+using System;
+using Xamarin.Essentials;
+using Xamarin.Forms;
+
+namespace AccessDoor
+{
+    public partial class App : Application
+    {
+        //TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
+        //To debug on Android emulators run the web backend against .NET Core not IIS
+        //If using other emulators besides stock Google images you may need to adjust the IP address
+        public static string AzureBackendUrl =
+            DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5000" : "http://localhost:5000";
+
+        public static INavigation Navigation { get; internal set; }
+
+        public App(string id) {
+            InitializeComponent();
+
+            bool isLoggedIn = Current.Properties.ContainsKey("IsLoggedIn") ? Convert.ToBoolean(Current.Properties["IsLoggedIn"]) : false;
+
+            if (!isLoggedIn) {
+                //Load if Not Logged In
+                MainPage = new NavigationPage(new LogInPage(id));
+            } else {
+
+                var url = Application.Current.Properties["Url"].ToString();
+                //Load if Logged In
+                MainPage = new NavigationPage(new Views.WebPage(url, id));
+            }
+        }
+
+        protected override void OnStart() {
+            // Handle when your app starts
+        }
+
+        protected override void OnSleep() {
+            // Handle when your app sleeps
+        }
+
+        protected override void OnResume() {
+            // Handle when your app resumes
+        }
+    }
+}

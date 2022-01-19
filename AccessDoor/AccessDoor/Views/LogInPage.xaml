@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:AccessDoor.Extention;assembly=AccessDoor"
+             mc:Ignorable="d"
+             x:Class="AccessDoor.Views.LogInPage">
+    
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="buttonStyle" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="FontFamily" Value="sans-serif"/>
+                <!--<Setter Property="BorderColor" Value="Lime" />-->
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="BorderWidth" Value="5" />
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="TextColor" Value="#67757c" />
+                <Setter Property="BackgroundColor" Value="#fff" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout x:Name="MasterLayout">
+            
+            <StackLayout x:Name="LogoStack">
+                <Image x:Name="LoginIcon"  Source="{local:PlatformResourceImage login.png}" Margin="0,80,0,0"/>
+            </StackLayout>
+            
+            <StackLayout x:Name="LoginEntries" VerticalOptions="StartAndExpand">
+                <StackLayout.Padding>
+                    <OnIdiom x:TypeArguments="Thickness">
+                        <OnIdiom.Phone>40,0,40,0</OnIdiom.Phone>
+                        <OnIdiom.Tablet>140,150,140,0</OnIdiom.Tablet>
+                        <OnIdiom.Desktop>200,210,200,0</OnIdiom.Desktop>
+                    </OnIdiom>
+                </StackLayout.Padding>
+
+                <ActivityIndicator x:Name="ActivitySpinner" Color="Red" IsRunning="True"/>
+
+                <Label x:Name="Lbl_Url" Text="Web Url" FontFamily="'Raleway',sans-serif"/>
+                <Entry x:Name="Entry_Url" Placeholder="Url" Text="http://103.82.228.86:130/"/>
+                <Label x:Name="Lbl_Username" Text="Usename" FontFamily="'Raleway',sans-serif"/>
+                <Entry x:Name="Entry_Username" Placeholder="Username"/>
+                <Label x:Name="Lbl_Key" Text="Key" FontFamily="'Raleway',sans-serif"/>
+                <Entry x:Name="Entry_Key" Placeholder="Provided Key"/>
+                <Button x:Name="Btn_Signin" Text="Sign In" Style="{StaticResource buttonStyle}" Clicked="SigninProcedure"/>
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
