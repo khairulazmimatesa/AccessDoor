@@ -53,7 +53,8 @@ of that file: the distribution certificate (.p12, base64) and its password, the 
 - The last successful login URL (which contains the key) is kept so the app can resume the session.
   Mobile stores it in the platform keystore/keychain (`SecureStorage`); desktop encrypts it with
   Windows DPAPI for the current user (`%LocalAppData%\AccessDoor\session.bin`).
-- Logging out deletes it; desktop also clears the embedded browser's cookies.
+- Logging out deletes it and clears the embedded browser's cookies (desktop) or cookies, web storage
+  and caches (mobile).
 
 ## Security to-dos
 

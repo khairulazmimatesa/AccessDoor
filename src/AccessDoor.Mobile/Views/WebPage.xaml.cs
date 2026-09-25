@@ -74,9 +74,11 @@ public partial class WebPage : ContentPage
         Browser.Source = new UrlWebViewSource { Url = _loginUrl.AbsoluteUri };
     }
 
-    private void OnLogoutClicked(object? sender, EventArgs e)
+    private async void OnLogoutClicked(object? sender, EventArgs e)
     {
         _session.ClearLoggedInUrl();
+        // Drop the portal's cookies and web storage so the next user starts clean.
+        await BrowserData.ClearAsync();
         _navigator.ShowLogin();
     }
 }
