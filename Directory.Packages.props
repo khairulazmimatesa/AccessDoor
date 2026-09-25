@@ -1,0 +1,16 @@
+<Project>
+  <!-- Central Package Management: every NuGet version used by the solution, pinned exactly. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.20" />
+    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.4191.47" />
+    <PackageVersion Include="System.Management" Version="10.0.12" />
+    <PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="10.0.12" />
+
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+</Project>
