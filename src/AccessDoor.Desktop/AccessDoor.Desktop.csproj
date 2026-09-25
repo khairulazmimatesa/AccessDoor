@@ -15,7 +15,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" />
     <PackageReference Include="System.Management" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,5 +25,13 @@
   <ItemGroup>
     <ProjectReference Include="..\AccessDoor.Core\AccessDoor.Core.csproj" />
   </ItemGroup>
+
+  <!-- The WebView2 package references its WPF control for every .NET 5+ app. This app is WinForms
+       only, and that WPF assembly causes a WindowsBase version conflict (MSB3277), so drop it. -->
+  <Target Name="RemoveWebView2Wpf" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <Reference Remove="@(Reference)" Condition="'%(Filename)' == 'Microsoft.Web.WebView2.Wpf'" />
+    </ItemGroup>
+  </Target>
 
 </Project>
