@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-      - run: dotnet test tests/AccessDoor.Core.Tests
+      - run: dotnet test --project tests/AccessDoor.Core.Tests
 
   desktop:
     runs-on: windows-latest

@@ -16,7 +16,7 @@ the app opens `…?username=…&key=…&token=<device id>` in an embedded browse
 Open `AccessDoor.slnx` (Visual Studio 2026 / Rider / `dotnet` CLI).
 
 ```sh
-dotnet test tests/AccessDoor.Core.Tests
+dotnet test --project tests/AccessDoor.Core.Tests
 dotnet build src/AccessDoor.Desktop                       # Windows; needs the WebView2 runtime to run
 dotnet workload install maui-android maui-ios
 dotnet build src/AccessDoor.Mobile -f net10.0-android
