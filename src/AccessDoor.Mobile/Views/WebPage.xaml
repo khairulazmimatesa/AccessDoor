@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AccessDoor.Mobile.Views.WebPage"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Log out" Clicked="OnLogoutClicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <WebView x:Name="Browser" IsVisible="False" Navigated="OnNavigated" />
+
+        <VerticalStackLayout x:Name="ErrorPanel" IsVisible="False" Spacing="12" Padding="12"
+                             HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Login Error" FontSize="22" HorizontalTextAlignment="Center" TextColor="Red" />
+            <Label x:Name="ErrorMessage" FontSize="16" HorizontalTextAlignment="Center" TextColor="Red" />
+            <Button x:Name="RetryButton" Text="Retry" Style="{StaticResource ActionButton}" Clicked="OnRetryClicked" />
+            <Button x:Name="BackButton" Text="Back" Style="{StaticResource ActionButton}" Clicked="OnLogoutClicked" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout x:Name="LoadingPanel" Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+            <ActivityIndicator IsRunning="True" Color="White" />
+            <Label Text="Loading…" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

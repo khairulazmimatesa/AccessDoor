@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AccessDoor.Mobile.Views.LogInPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="8" MaximumWidthRequest="420"
+                             Padding="{OnIdiom Phone='40,80,40,0', Default='40,150,40,0'}">
+
+            <Image Source="login.png" HeightRequest="120" Margin="0,0,0,24" SemanticProperties.Description="AccessDoor logo" />
+
+            <Label Text="Web URL" />
+            <Entry x:Name="UrlEntry" Placeholder="https://…" Keyboard="Url" ReturnType="Next" />
+
+            <Label Text="Username" />
+            <Entry x:Name="UsernameEntry" Placeholder="Username" ReturnType="Next" IsSpellCheckEnabled="False" IsTextPredictionEnabled="False" />
+
+            <Label Text="Key" />
+            <Entry x:Name="KeyEntry" Placeholder="Provided key" IsPassword="True" ReturnType="Go" />
+
+            <Button Text="Sign In" Style="{StaticResource ActionButton}" Margin="0,24,0,0" Clicked="OnSignInClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
