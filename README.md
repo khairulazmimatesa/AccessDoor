@@ -22,6 +22,13 @@ dotnet workload install maui-android maui-ios
 dotnet build src/AccessDoor.Mobile -f net10.0-android
 ```
 
+## Signed iOS builds
+
+`.github/workflows/ios-release.yml` produces a signed `.ipa` (uploaded as a workflow artifact) when a
+`v*` tag is pushed or the workflow is run manually. It needs four repository secrets, listed at the top
+of that file: the distribution certificate (.p12, base64) and its password, the provisioning profile for
+`com.companyname.AccessDoor` (base64), and the certificate name.
+
 ## Compatibility notes
 
 - **Device tokens are kept.** Desktop still sends the lower-cased CPU `ProcessorId`; Android reuses the
