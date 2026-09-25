@@ -45,5 +45,5 @@ jobs:
           global-json-file: global.json
       - run: dotnet workload install maui-ios
       # Debug builds target the iOS simulator, so no signing certificate is needed.
-      # Restrict TargetFrameworks so restore does not also require the Android workload.
-      - run: dotnet build src/AccessDoor.Mobile -f net10.0-ios -c Debug -p:TargetFrameworks=net10.0-ios
+      # Build only the iOS target so restore does not also require the Android workload.
+      - run: dotnet build src/AccessDoor.Mobile -f net10.0-ios -c Debug -p:MobileTargetFrameworks=net10.0-ios

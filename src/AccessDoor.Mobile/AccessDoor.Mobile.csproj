@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Override with -p:MobileTargetFrameworks=... to build one platform without the other's workload. -->
     <TargetFrameworks>net10.0-android;net10.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MobileTargetFrameworks)' != ''">$(MobileTargetFrameworks)</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <RootNamespace>AccessDoor.Mobile</RootNamespace>
     <UseMaui>true</UseMaui>
