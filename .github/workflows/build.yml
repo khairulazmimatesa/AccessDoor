@@ -12,7 +12,7 @@ concurrency:
 
 env:
   # Pinned .NET workload set (MAUI 10.0.20, Android 36.1.69, iOS 26.5.10318).
-  # Keep in step with Microsoft.Maui.Controls in Directory.Packages.props.
+  # Microsoft.Maui.Controls in Directory.Packages.props may be newer (NuGet servicing), never older.
   WORKLOAD_VERSION: 10.0.401
 
 jobs:
