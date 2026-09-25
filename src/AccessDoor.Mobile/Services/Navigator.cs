@@ -14,8 +14,9 @@ public sealed class Navigator(IServiceProvider services, SessionStore session)
 
     private static void SetRoot(Page page)
     {
-        var window = Application.Current?.Windows.FirstOrDefault()
-            ?? throw new InvalidOperationException("No window to navigate in.");
+        var window = Application.Current?.Windows is [var first, ..]
+            ? first
+            : throw new InvalidOperationException("No window to navigate in.");
         window.Page = new NavigationPage(page);
     }
 }
