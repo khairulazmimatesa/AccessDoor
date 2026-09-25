@@ -24,8 +24,10 @@ dotnet build src/AccessDoor.Mobile -f net10.0-android
 
 ## Dependencies
 
-NuGet versions are pinned in `Directory.Packages.props` (Central Package Management) and the SDK in
-`global.json` (patch updates only). To upgrade, change the version there; project files carry no versions.
+NuGet versions are pinned in `Directory.Packages.props` (Central Package Management). `global.json` pins
+the SDK (patch updates only) and the workload set (`workloadVersion`), so `dotnet workload install`
+always installs the same MAUI/Android/iOS tooling (MAUI 10.0.20, Android 36.1.69, iOS 26.5.10318).
+Keep `workloadVersion` and the `Microsoft.Maui.Controls` version in step when upgrading. To upgrade, change the version there; project files carry no versions.
 
 ## Signed iOS builds
 
