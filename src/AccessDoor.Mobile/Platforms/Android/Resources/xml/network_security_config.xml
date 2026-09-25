@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The AccessDoor server is currently reached over plain HTTP on a bare IP address.
+  Cleartext is allowed only for that host; move the server to HTTPS and delete this exception.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">103.82.228.86</domain>
+    </domain-config>
+</network-security-config>

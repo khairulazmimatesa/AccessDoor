@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AccessDoor.Core/AccessDoor.Core.csproj" />
+    <Project Path="src/AccessDoor.Desktop/AccessDoor.Desktop.csproj" />
+    <Project Path="src/AccessDoor.Mobile/AccessDoor.Mobile.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AccessDoor.Core.Tests/AccessDoor.Core.Tests.csproj" />
+  </Folder>
+</Solution>
