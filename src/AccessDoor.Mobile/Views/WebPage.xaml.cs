@@ -7,6 +7,7 @@ public partial class WebPage : ContentPage
 {
     private readonly Uri _loginUrl;
     private readonly SessionStore _session;
+    private bool _loginConfirmed;
 
     public WebPage(Uri loginUrl, SessionStore session)
     {
@@ -23,11 +24,16 @@ public partial class WebPage : ContentPage
         switch (e.Result)
         {
             case WebNavigationResult.Success:
+                if (_loginConfirmed)
+                    break; // In-app navigation after a successful login.
+
+                // The login response must explicitly allow access; a page without a result
+                // (wrong URL, captive portal, ...) is not a successful login.
                 var result = LoginResult.TryParse(e.Url);
-                if (result is { IsAllowed: false })
-                    ShowError(result.Message ?? "Access denied.", canRetry: false);
-                else
+                if (result is { IsAllowed: true })
                     ShowBrowser();
+                else
+                    ShowError(result?.Message ?? "The server did not confirm the login.", canRetry: false);
                 break;
 
             case WebNavigationResult.Timeout:
@@ -44,6 +50,7 @@ public partial class WebPage : ContentPage
 
     private void ShowBrowser()
     {
+        _loginConfirmed = true;
         Browser.IsVisible = true;
         ErrorPanel.IsVisible = false;
         NavigationPage.SetHasNavigationBar(this, true);

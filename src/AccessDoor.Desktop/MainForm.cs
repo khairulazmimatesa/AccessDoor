@@ -111,9 +111,11 @@ internal sealed class MainForm : Form
             return; // In-app navigation after a successful login.
 
         var result = LoginResult.TryParse(_browser.Source?.AbsoluteUri);
-        if (!e.IsSuccess || result is { IsAllowed: false })
+        if (!e.IsSuccess || result is not { IsAllowed: true })
         {
-            ShowLogin(result?.Message ?? $"Could not reach the server ({e.WebErrorStatus}).");
+            ShowLogin(result?.Message ?? (e.IsSuccess
+                ? "The server did not confirm the login."
+                : $"Could not reach the server ({e.WebErrorStatus})."));
             return;
         }
 

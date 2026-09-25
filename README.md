@@ -27,10 +27,11 @@ dotnet build src/AccessDoor.Mobile -f net10.0-android
 - **Device tokens are kept.** Desktop still sends the lower-cased CPU `ProcessorId`; Android reuses the
   `my_id` value stored by the old app. New Android installs use `ANDROID_ID` (the old `Build.Serial`
   is unreadable on Android 10+); iOS uses `identifierForVendor`.
-- The Android package id `AccessDoor.AccessDoor` is unchanged, so the new app installs as an update.
+- The Android package id `AccessDoor.AccessDoor` and iOS bundle id `com.companyname.AccessDoor` are
+  unchanged, so the new app installs as an update.
 - Query values are now URL-escaped, so usernames/keys containing `&`, `=`, spaces, etc. work.
-- A page URL without a `msg` result is treated as normal in-app navigation (the old mobile app showed an
-  empty error for these).
+- The login response must carry `IsAllow=true`; a page without a result (wrong URL, captive portal)
+  is rejected. After a confirmed login, further page navigation is not checked.
 
 ## Security to-dos
 

@@ -9,8 +9,9 @@
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
     <ApplicationTitle>AccessDoor</ApplicationTitle>
-    <!-- Keeps the original Android package id so the app upgrades in place. -->
+    <!-- Keep the original package/bundle ids so existing installs upgrade in place. -->
     <ApplicationId>AccessDoor.AccessDoor</ApplicationId>
+    <ApplicationId Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">com.companyname.AccessDoor</ApplicationId>
     <ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
     <ApplicationVersion>2</ApplicationVersion>
 
