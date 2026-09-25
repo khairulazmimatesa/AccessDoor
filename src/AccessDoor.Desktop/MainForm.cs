@@ -9,7 +9,9 @@ internal sealed class MainForm : Form
     private static readonly Color Brand = Color.FromArgb(56, 198, 164);
 
     private readonly SettingsStore _settings;
-    private readonly string _deviceToken = DeviceToken.Get();
+    // The WMI query behind the device token takes up to a second; run it in the background during
+    // startup (it is only needed when the user signs in, not when a saved session is resumed).
+    private readonly Task<string> _deviceToken = Task.Run(DeviceToken.Get);
 
     private readonly TableLayoutPanel _loginPanel;
     private readonly TextBox _urlBox = new() { Text = LoginRequest.DefaultBaseUrl, Dock = DockStyle.Fill };
@@ -52,7 +54,7 @@ internal sealed class MainForm : Form
         Controls.Add(_browserPanel);
         Controls.Add(_loginPanel);
 
-        _loginButton.Click += (_, _) => Login();
+        _loginButton.Click += async (_, _) => await LoginAsync();
         _logoutButton.Click += (_, _) => Logout();
         _browser.NavigationCompleted += OnNavigationCompleted;
     }
@@ -81,9 +83,19 @@ internal sealed class MainForm : Form
             Navigate(url);
     }
 
-    private void Login()
+    private async Task LoginAsync()
     {
-        var request = new LoginRequest(_urlBox.Text, _usernameBox.Text, _keyBox.Text, _deviceToken);
+        _loginButton.Enabled = false;
+        LoginRequest request;
+        try
+        {
+            request = new LoginRequest(_urlBox.Text, _usernameBox.Text, _keyBox.Text, await _deviceToken);
+        }
+        finally
+        {
+            _loginButton.Enabled = true;
+        }
+
         if (request.Validate() is { } error)
         {
             _errorLabel.Text = error;
@@ -130,6 +142,8 @@ internal sealed class MainForm : Form
     {
         _settings.LoggedInUrl = null;
         _settings.Save();
+        // Drop the portal's session cookies so the next user starts clean.
+        _browser.CoreWebView2?.CookieManager.DeleteAllCookies();
         _browser.CoreWebView2?.Navigate("about:blank");
         ShowLogin(string.Empty);
     }

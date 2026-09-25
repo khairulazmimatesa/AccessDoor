@@ -40,6 +40,13 @@ of that file: the distribution certificate (.p12, base64) and its password, the 
 - The login response must carry `IsAllow=true`; a page without a result (wrong URL, captive portal)
   is rejected. After a confirmed login, further page navigation is not checked.
 
+## Stored data
+
+- The last successful login URL (which contains the key) is kept so the app can resume the session.
+  Mobile stores it in the platform keystore/keychain (`SecureStorage`); desktop encrypts it with
+  Windows DPAPI for the current user (`%LocalAppData%\AccessDoor\session.bin`).
+- Logging out deletes it; desktop also clears the embedded browser's cookies.
+
 ## Security to-dos
 
 - The server is plain HTTP on a bare IP, so the key travels unencrypted. Cleartext is now allowed only for

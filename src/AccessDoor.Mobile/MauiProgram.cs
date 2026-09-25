@@ -10,8 +10,10 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder.UseMauiApp<App>();
 
+        builder.Services.AddSingleton(Preferences.Default);
+        builder.Services.AddSingleton(SecureStorage.Default);
         builder.Services.AddSingleton<SessionStore>();
-        builder.Services.AddSingleton<IPreferences>(Preferences.Default);
+        builder.Services.AddSingleton<Navigator>();
         builder.Services.AddTransient<LogInPage>();
 
         return builder.Build();

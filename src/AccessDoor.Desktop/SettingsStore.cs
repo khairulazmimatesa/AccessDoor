@@ -1,36 +1,61 @@
-using System.Text.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AccessDoor.Desktop;
 
-/// <summary>Remembers the last successful login URL in %LocalAppData%\AccessDoor\settings.json.</summary>
+/// <summary>
+/// Remembers the last successful login URL in %LocalAppData%\AccessDoor\session.bin.
+/// The URL embeds the user's key, so it is encrypted with DPAPI for the current Windows user.
+/// </summary>
 internal sealed class SettingsStore
 {
-    private readonly string _path = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AccessDoor", "settings.json");
+    private static readonly string Folder =
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AccessDoor");
+
+    private readonly string _path = Path.Combine(Folder, "session.bin");
 
     public Uri? LoggedInUrl { get; set; }
 
     public SettingsStore()
     {
+        // Earlier 2.0 builds stored the URL in plain JSON; remove it.
+        TryDelete(Path.Combine(Folder, "settings.json"));
+
         try
         {
-            if (File.Exists(_path) &&
-                JsonSerializer.Deserialize<Data>(File.ReadAllText(_path)) is { LoggedInUrl: { } url })
+            if (File.Exists(_path))
             {
-                LoggedInUrl = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri : null;
+                var bytes = ProtectedData.Unprotect(File.ReadAllBytes(_path), null, DataProtectionScope.CurrentUser);
+                LoggedInUrl = Uri.TryCreate(Encoding.UTF8.GetString(bytes), UriKind.Absolute, out var uri) ? uri : null;
             }
         }
-        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is IOException or CryptographicException or UnauthorizedAccessException)
         {
-            // A corrupt or unreadable settings file just means "not logged in".
+            // A corrupt or unreadable file just means "not logged in".
         }
     }
 
     public void Save()
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
-        File.WriteAllText(_path, JsonSerializer.Serialize(new Data(LoggedInUrl?.AbsoluteUri)));
+        if (LoggedInUrl is null)
+        {
+            TryDelete(_path);
+            return;
+        }
+
+        Directory.CreateDirectory(Folder);
+        var bytes = ProtectedData.Protect(Encoding.UTF8.GetBytes(LoggedInUrl.AbsoluteUri), null, DataProtectionScope.CurrentUser);
+        File.WriteAllBytes(_path, bytes);
     }
 
-    private sealed record Data(string? LoggedInUrl);
+    private static void TryDelete(string path)
+    {
+        try
+        {
+            File.Delete(path);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+        }
+    }
 }

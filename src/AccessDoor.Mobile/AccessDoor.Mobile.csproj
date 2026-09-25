@@ -9,6 +9,8 @@
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+    <!-- Generate XAML as C# at build time instead of inflating it at runtime (faster page creation). -->
+    <MauiXamlInflator>SourceGen</MauiXamlInflator>
 
     <ApplicationTitle>AccessDoor</ApplicationTitle>
     <!-- Keep the original package/bundle ids so existing installs upgrade in place. -->
