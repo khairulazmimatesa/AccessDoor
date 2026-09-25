@@ -10,6 +10,11 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Pinned .NET workload set (MAUI 10.0.20, Android 36.1.69, iOS 26.5.10318).
+  # Keep in step with Microsoft.Maui.Controls in Directory.Packages.props.
+  WORKLOAD_VERSION: 10.0.401
+
 jobs:
   core:
     runs-on: ubuntu-latest
@@ -41,7 +46,7 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-      - run: dotnet workload install maui-android
+      - run: dotnet workload install maui-android --version ${{ env.WORKLOAD_VERSION }}
       # iOS cannot be restored on Linux, so build only the Android target.
       - run: dotnet build src/AccessDoor.Mobile -f net10.0-android -c Release -p:MobileTargetFrameworks=net10.0-android
 
@@ -55,7 +60,7 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-      - run: dotnet workload install maui-ios
+      - run: dotnet workload install maui-ios --version ${{ env.WORKLOAD_VERSION }}
       # Debug builds target the iOS simulator, so no signing certificate is needed.
       # Build only the iOS target so restore does not also require the Android workload.
       - run: dotnet build src/AccessDoor.Mobile -f net10.0-ios -c Debug -p:MobileTargetFrameworks=net10.0-ios
