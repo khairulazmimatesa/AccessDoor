@@ -43,5 +43,5 @@ dotnet build src/AccessDoor.Mobile -f net10.0-android
 
 ## Legacy code
 
-`AccessDoor/`, `AccessDoorWinforms/`, `Epsb AccessDoor (Desktop)/` and `AccessDoor.sln` are the original
-projects, left in place for reference. Delete them once the new apps are verified.
+The original Xamarin.Forms, .NET Framework WinForms and WPF projects were removed; they remain in git
+history before this change.
