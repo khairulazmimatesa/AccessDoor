@@ -22,6 +22,11 @@ dotnet workload install maui-android maui-ios
 dotnet build src/AccessDoor.Mobile -f net10.0-android
 ```
 
+## Dependencies
+
+NuGet versions are pinned in `Directory.Packages.props` (Central Package Management) and the SDK in
+`global.json` (patch updates only). To upgrade, change the version there; project files carry no versions.
+
 ## Signed iOS builds
 
 `.github/workflows/ios-release.yml` produces a signed `.ipa` (uploaded as a workflow artifact) when a
