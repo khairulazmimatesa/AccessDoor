@@ -14,6 +14,11 @@ on:
   push:
     tags: ['v*']
 
+env:
+  # Pinned .NET workload set (MAUI 10.0.20, Android 36.1.69, iOS 26.5.10318).
+  # Keep in step with Microsoft.Maui.Controls in Directory.Packages.props.
+  WORKLOAD_VERSION: 10.0.401
+
 jobs:
   ios-release:
     runs-on: macos-latest
@@ -40,7 +45,7 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-      - run: dotnet workload install maui-ios
+      - run: dotnet workload install maui-ios --version ${{ env.WORKLOAD_VERSION }}
 
       - name: Install certificate and provisioning profile
         id: signing
