@@ -22,6 +22,13 @@ dotnet workload install maui-android maui-ios
 dotnet build src/AccessDoor.Mobile -f net10.0-android
 ```
 
+## Signed iOS builds
+
+`.github/workflows/ios-release.yml` produces a signed `.ipa` (uploaded as a workflow artifact) when a
+`v*` tag is pushed or the workflow is run manually. It needs four repository secrets, listed at the top
+of that file: the distribution certificate (.p12, base64) and its password, the provisioning profile for
+`com.companyname.AccessDoor` (base64), and the certificate name.
+
 ## Compatibility notes
 
 - **Device tokens are kept.** Desktop still sends the lower-cased CPU `ProcessorId`; Android reuses the
@@ -32,6 +39,13 @@ dotnet build src/AccessDoor.Mobile -f net10.0-android
 - Query values are now URL-escaped, so usernames/keys containing `&`, `=`, spaces, etc. work.
 - The login response must carry `IsAllow=true`; a page without a result (wrong URL, captive portal)
   is rejected. After a confirmed login, further page navigation is not checked.
+
+## Stored data
+
+- The last successful login URL (which contains the key) is kept so the app can resume the session.
+  Mobile stores it in the platform keystore/keychain (`SecureStorage`); desktop encrypts it with
+  Windows DPAPI for the current user (`%LocalAppData%\AccessDoor\session.bin`).
+- Logging out deletes it; desktop also clears the embedded browser's cookies.
 
 ## Security to-dos
 

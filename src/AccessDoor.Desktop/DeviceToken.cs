@@ -12,16 +12,23 @@ internal static class DeviceToken
     /// </summary>
     public static string Get()
     {
-        using var searcher = new ManagementObjectSearcher("SELECT ProcessorId FROM Win32_Processor");
-        using var results = searcher.Get();
-
-        foreach (var obj in results)
+        try
         {
-            using (obj)
+            using var searcher = new ManagementObjectSearcher("SELECT ProcessorId FROM Win32_Processor");
+            using var results = searcher.Get();
+
+            foreach (var obj in results)
             {
-                if (obj["ProcessorId"] is string id && !string.IsNullOrWhiteSpace(id))
-                    return id.Replace(":", "", StringComparison.Ordinal).ToLowerInvariant();
+                using (obj)
+                {
+                    if (obj["ProcessorId"] is string id && !string.IsNullOrWhiteSpace(id))
+                        return id.Replace(":", "", StringComparison.Ordinal).ToLowerInvariant();
+                }
             }
+        }
+        catch (Exception ex) when (ex is ManagementException or UnauthorizedAccessException or System.Runtime.InteropServices.COMException)
+        {
+            // WMI service disabled or broken; fall through to the machine name.
         }
 
         return Environment.MachineName.ToLowerInvariant();

@@ -5,7 +5,7 @@
              NavigationPage.HasNavigationBar="False">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="8" MaximumWidthRequest="420"
+        <VerticalStackLayout x:Name="Form" IsVisible="False" Spacing="8" MaximumWidthRequest="420"
                              Padding="{OnIdiom Phone='40,80,40,0', Default='40,150,40,0'}">
 
             <Image Source="login.png" HeightRequest="120" Margin="0,0,0,24" SemanticProperties.Description="AccessDoor logo" />

@@ -7,17 +7,19 @@ public partial class WebPage : ContentPage
 {
     private readonly Uri _loginUrl;
     private readonly SessionStore _session;
+    private readonly Navigator _navigator;
     private bool _loginConfirmed;
 
-    public WebPage(Uri loginUrl, SessionStore session)
+    public WebPage(Uri loginUrl, SessionStore session, Navigator navigator)
     {
         InitializeComponent();
         _loginUrl = loginUrl;
         _session = session;
+        _navigator = navigator;
         Browser.Source = loginUrl.AbsoluteUri;
     }
 
-    private void OnNavigated(object? sender, WebNavigatedEventArgs e)
+    private async void OnNavigated(object? sender, WebNavigatedEventArgs e)
     {
         LoadingPanel.IsVisible = false;
 
@@ -31,7 +33,7 @@ public partial class WebPage : ContentPage
                 // (wrong URL, captive portal, ...) is not a successful login.
                 var result = LoginResult.TryParse(e.Url);
                 if (result is { IsAllowed: true })
-                    ShowBrowser();
+                    await ShowBrowserAsync();
                 else
                     ShowError(result?.Message ?? "The server did not confirm the login.", canRetry: false);
                 break;
@@ -48,13 +50,13 @@ public partial class WebPage : ContentPage
         }
     }
 
-    private void ShowBrowser()
+    private async Task ShowBrowserAsync()
     {
         _loginConfirmed = true;
         Browser.IsVisible = true;
         ErrorPanel.IsVisible = false;
         NavigationPage.SetHasNavigationBar(this, true);
-        _session.LoggedInUrl = _loginUrl;
+        await _session.SetLoggedInUrlAsync(_loginUrl);
     }
 
     private void ShowError(string message, bool canRetry)
@@ -74,8 +76,7 @@ public partial class WebPage : ContentPage
 
     private void OnLogoutClicked(object? sender, EventArgs e)
     {
-        _session.LoggedInUrl = null;
-        var loginPage = Handler!.MauiContext!.Services.GetRequiredService<LogInPage>();
-        Window!.Page = new NavigationPage(loginPage);
+        _session.ClearLoggedInUrl();
+        _navigator.ShowLogin();
     }
 }
